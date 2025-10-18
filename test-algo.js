@@ -1,30 +1,24 @@
+/**
+ * @param {number[]} gas
+ * @param {number[]} cost
+ * @return {number}
+ */
 var canCompleteCircuit = function (gas, cost) {
     const n = gas.length;
+    let index = 0, totalCost = 0, totalGas = 0, total = 0;
 
-    for (let start = 0; start < n; start++) {
-        let tank = 0;
-        let failed = false;
+    for (let i = 0; i < n; i++) {
+        total += gas[i] - cost[i];
+        totalCost += cost[i];
+        totalGas += gas[i];
 
-        // mico optimization
-        if (gas[start] == 0 || (cost[start] >= gas[start]) && start != n - 1) {
-            continue;
+        if (total < 0) {
+            total = 0;
+            index = i + 1;
         }
-        for (let station = start; station != ((n + start - 1) % n); station = (station + 1) % n) {
-            tank += gas[station] - cost[station];
-            if (tank < 0) {
-                failed = true;
-                break;
-            }
-        }
-
-        if (failed) continue;
-
-        const lastStation = (n + start - 1) % n;
-        tank += gas[lastStation] - cost[lastStation];
-        if (tank >= 0) return start;
     }
 
-    return -1;
+    return totalCost > totalGas ? -1 : index;
 };
 
 // outputs : 3
