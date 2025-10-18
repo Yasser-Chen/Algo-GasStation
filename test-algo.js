@@ -5,20 +5,20 @@
  */
 var canCompleteCircuit = function (gas, cost) {
     const n = gas.length;
-    let index = 0, totalCost = 0, totalGas = 0, total = 0;
+    let start = 0, tank = 0, total = 0;
 
     for (let i = 0; i < n; i++) {
-        total += gas[i] - cost[i];
-        totalCost += cost[i];
-        totalGas += gas[i];
+        const net = gas[i] - cost[i];
+        total += net;
+        tank += net;
 
-        if (total < 0) {
-            total = 0;
-            index = i + 1;
+        if (tank < 0) {
+            tank = 0;
+            start = i + 1;
         }
     }
 
-    return totalCost > totalGas ? -1 : index;
+    return total < 0 ? -1 : start;
 };
 
 // outputs : 3
